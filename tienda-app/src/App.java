@@ -1,5 +1,9 @@
+import tienda.GestionCliente;
+
 public class App {
   public static void main(String[] args) throws Exception {
+
+    App.leerDatos();
 
     int menuSeleccionado = 0;
     do {
@@ -26,7 +30,7 @@ public class App {
             // Gestionar Producto
             break;
           case 3:
-            // Gestionar Cliente
+            GestionCliente.verMenu();
             break;
           case 8:
             verAcercaDe();
@@ -43,7 +47,16 @@ public class App {
       System.out.println("\n");
     } while (menuSeleccionado != 9);
 
+    App.guardarDatos();
     System.out.println("Elegiste salir. Adiós.");
+  }
+
+  static void leerDatos() {
+    GestionCliente.leerClientes();
+  }
+
+  static void guardarDatos() {
+    GestionCliente.guardarClientes();
   }
 
   static void verAcercaDe() {
