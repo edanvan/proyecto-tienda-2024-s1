@@ -36,7 +36,6 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
-
     public double calcularValorTotal() {
         return precio * cantidad;
     }
@@ -46,5 +45,17 @@ public class Producto {
         System.out.println("Precio: $" + precio);
         System.out.println("Cantidad: " + cantidad);
         System.out.println("Valor Total: $" + calcularValorTotal());
+    }
+
+    public static void main(String[] args) {
+
+        Producto producto1 = new Producto("Manzana", 0.75, 100);
+
+        producto1.mostrarInformacion();
+
+        producto1.setCantidad(120);
+
+        System.out.println("\nInformación actualizada del producto:");
+        producto1.mostrarInformacion();
     }
 }
