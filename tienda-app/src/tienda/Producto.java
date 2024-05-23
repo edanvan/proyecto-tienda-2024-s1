@@ -1,8 +1,13 @@
 package tienda;
 
 public class Producto {
-  
-  public Producto() {
+  private String nombre;
+  private double precio; 
 
+  public Producto() {
+    
   }
+
+
+  
 }
