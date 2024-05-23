@@ -1,9 +1,9 @@
 package tienda;
-public abstract CajaRegistradora.java {
+import java.util.Scanner;
+public class CajaRegistradora {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
+        Scanner Scanner = new Scanner(System.in);
         // Lista de productos
         String[] productos = {"Arroz", "Frijoles", "Aceite de cocina", "Harina de trigo", "Azúcar", "Sal", "Pasta", "Salsa de tomate", "Café", "Té", "Leche", "Huevos", "Pan", "Papel higiénico", "Jabón", "Champú", "Pasta de dientes", "Cepillos de dientes", "Galletas", "Refrescos"};
         double[] preciosUnitarios = {855, 1045, 1900, 380, 570, 950, 760, 285, 190, 190, 855, 95, 95, 475, 570, 285, 665, 760, 152, 228};
@@ -32,13 +32,13 @@ public abstract CajaRegistradora.java {
                 System.out.printf("%d. %s (%s)\n", i + 1, productos[i], presentaciones[i]);
             }
             System.out.print("Ingrese el número del producto (0 para salir): ");
-            int opcionProducto = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea
+            int opcionProducto = Scanner.nextInt();
+            Scanner.nextLine(); // Consumir el salto de línea
 
             if (opcionProducto > 0 && opcionProducto <= productos.length) {
                 System.out.print("Ingrese la cantidad: ");
-                cantidadProducto = scanner.nextInt();
-                scanner.nextLine();
+                cantidadProducto = Scanner.nextInt();
+                Scanner.nextLine();
 
                 nombreProducto = productos[opcionProducto - 1];
                 precioUnitario = preciosUnitarios[opcionProducto - 1];
@@ -67,5 +67,6 @@ public abstract CajaRegistradora.java {
 
         // Mostrar el total de la compra
         System.out.println("\nResumen de compra:");
-        System.out.print("Subtotal: $%.2f\n", totalSinIVA);
-        
+        System.out.printf("Subtotal: $%.2f\n", totalSinIVA);
+    }
+}

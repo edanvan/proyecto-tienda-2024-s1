@@ -1,4 +1,4 @@
-package objetos;
+package tienda;
 class Producto {
     String nombre;
     double precio;
