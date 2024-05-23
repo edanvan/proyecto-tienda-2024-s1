@@ -1,10 +1,10 @@
-package tienda;
-class Producto {
+/* package tienda;
+class Producton {
     String nombre;
     double precio;
     int cantidad;
 
-    public Producto(String nombre, double precio, int cantidad) {
+    public Producton(String nombre, double precio, int cantidad) {
         this.nombre = nombre;
         this.precio = precio;
         this.cantidad = cantidad;
@@ -40,8 +40,8 @@ public class ArregloProductos {
         Producto[] productos = new Producto[2];
 
         // Inicialización de productos
-        productos[0] = new Producto("Manzanas", 2.50, 10);
-        productos[1] = new Producto("Leche", 3.20, 5);
+        productos[0] = new Producton("Manzanas", 2.50, 10);
+        productos[1] = new Producton("Leche", 3.20, 5);
 
         // Cálculo y muestra del valor total para cada producto
         for (Producto producto : productos) {
@@ -56,3 +56,4 @@ public class ArregloProductos {
         System.out.println("\nValor total de la compra: $" + valorTotal);
     }
 }
+ */

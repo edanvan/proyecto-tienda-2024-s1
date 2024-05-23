@@ -19,8 +19,6 @@ public class Cliente {
   private static final String nombreArchivo = "datos/clientes.csv";
   public static void guardarClientes() {
 
-    System.out.println(Path.of(nombreArchivo).toAbsolutePath().toString());
-
     try (Formatter escritor = new Formatter(Path.of(nombreArchivo).toAbsolutePath().toString(), "UTF-8")) {
       // 
       for (Cliente cliente : clientes) {
@@ -60,7 +58,6 @@ public class Cliente {
     }
 
     System.out.println("-".repeat(52));
-
   }
 
   private String identificacion;
@@ -77,8 +74,8 @@ public class Cliente {
     setApellidos(apellidos);
   }
 
-  public boolean guardar() {
-    return Cliente.clientes.add(this);
+  public void guardar() {
+    Cliente.clientes.add(this);
   }
 
   public String getIdentificacion() {

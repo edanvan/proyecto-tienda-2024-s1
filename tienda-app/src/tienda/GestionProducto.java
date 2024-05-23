@@ -1,16 +1,16 @@
 package tienda;
 
-public class GestionCliente {
+public class GestionProducto {
 
   public static void verMenu() {
     int menuSeleccionado = 0;
     do {
       System.out.println("++++++ Administración de Tienda ++++++");
-      System.out.println("***** Menú Clientes *****");
+      System.out.println("***** Menú Productos *****");
       String menu = """
-          1. Crear Cliente
-          2. Editar Cliente
-          3. Ver Clientes
+          1. Crear Producto
+          2. Editar Producto
+          3. Ver Productos
           9. Regresar
           """;
       System.out.println(menu);
@@ -21,13 +21,13 @@ public class GestionCliente {
 
         switch (menuSeleccionado) {
           case 1:
-            crearCliente();
+            crearProducto();
             break;
           case 2:
             // editar cliente
             break;
           case 3:
-            verClientes();
+            verProductos();
             break;
           default:
             break;
@@ -42,17 +42,22 @@ public class GestionCliente {
     } while (menuSeleccionado != 9);
   }
 
-  public static void crearCliente() {
+  public static void crearProducto() {
     try {
-      System.out.print("Identificación: ");
-      String identificacion = System.console().readLine();
-      System.out.print("Nombres: ");
-      String nombres = System.console().readLine();
-      System.out.print("Apellidos: ");
-      String apellidos = System.console().readLine();
+      System.out.print("Código: ");
+      String codigo = System.console().readLine();
+      System.out.print("Nombre: ");
+      String nombre = System.console().readLine();
+      System.out.print("Precio sin IVA: ");
+      double precio = Double.parseDouble(System.console().readLine());
+      System.out.print("Porcentaje de IVA: ");
+      double porcentajeIva = Double.parseDouble(System.console().readLine());
+      System.out.print("Cantidad en Inventario: ");
+      int cantidadInventario = Integer.parseInt(System.console().readLine());
 
-      Cliente cliente = new Cliente(identificacion, nombres, apellidos);
-      cliente.guardar();
+      Producto producto = new Producto(codigo, nombre, precio, porcentajeIva, cantidadInventario);
+
+      producto.guardar();
 
     } catch (NumberFormatException error) {
       System.out.println("Error al convertir un número:\n" + error.getMessage());
@@ -62,15 +67,16 @@ public class GestionCliente {
     System.out.println();
   }
 
-  public static void guardarClientes() {
-    Cliente.guardarClientes();
+  public static void guardarProductos() {
+    Producto.guardarProductos();
   }
 
-  public static void leerClientes() {
-    Cliente.leerClientes();
+  public static void leerProductos() {
+    Producto.leerProductos();
   }
 
-  public static void verClientes() {
-    Cliente.verClientes();
+  public static void verProductos() {
+    Producto.verProductos();
   }
+
 }
