@@ -16,46 +16,48 @@ public class Producto {
         return nombre;
     }
 
+
     public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    this.nombre = nombre;
+}
 
     public double getPrecio() {
-        return precio;
-    }
+    return precio;
+}
 
     public void setPrecio(double precio) {
-        this.precio = precio;
-    }
+    this.precio = precio;
+}
 
     public int getCantidad() {
-        return cantidad;
-    }
+    return cantidad;
+}
 
     public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
+    this.cantidad = cantidad;
+}
+
 
     public double calcularValorTotal() {
-        return precio * cantidad;
-    }
+    return precio * cantidad;
+}
 
     public void mostrarInformacion() {
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Precio: $" + precio);
-        System.out.println("Cantidad: " + cantidad);
-        System.out.println("Valor Total: $" + calcularValorTotal());
-    }
+    System.out.println("Nombre: " + nombre);
+    System.out.println("Precio: $" + precio);
+    System.out.println("Cantidad: " + cantidad);
+    System.out.println("Valor Total: $" + calcularValorTotal());
+}
 
     public static void main(String[] args) {
 
-        Producto producto1 = new Producto("Manzana", 0.75, 100);
+    Producto producto1 = new Producto("Manzana", 0.75, 100);
 
-        producto1.mostrarInformacion();
+    producto1.mostrarInformacion();
 
-        producto1.setCantidad(120);
+    producto1.setCantidad(120);
 
-        System.out.println("\nInformación actualizada del producto:");
-        producto1.mostrarInformacion();
+    System.out.println("\nInformación actualizada del producto:");
+    producto1.mostrarInformacion();
     }
 }
