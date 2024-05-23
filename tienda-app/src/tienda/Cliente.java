@@ -16,13 +16,12 @@ import java.util.Scanner;
 public class Cliente {
   private static final List<Cliente> clientes = new ArrayList<Cliente>(10);
   
-  private static final String nombreArchivo = "./datos/clientes.csv";
-  //private static String rutaArchivo = Paths.get(nombreArchivo).toAbsolutePath().toString();
-  private static final File archivo = new File(nombreArchivo);
-
+  private static final String nombreArchivo = "datos/clientes.csv";
   public static void guardarClientes() {
 
-    try (Formatter escritor = new Formatter(archivo.getAbsolutePath(), "UTF-8")) {
+    System.out.println(Path.of(nombreArchivo).toAbsolutePath().toString());
+
+    try (Formatter escritor = new Formatter(Path.of(nombreArchivo).toAbsolutePath().toString(), "UTF-8")) {
       // 
       for (Cliente cliente : clientes) {
         // escribir cada atributo separándolos con comas(,) y un salto de línea al final para cada cliente
@@ -36,7 +35,7 @@ public class Cliente {
 
   public static void leerClientes() {
     // El scanner separará los atributos usando comas (,) pero evitará leer líneas vacías (\R)
-    try (Scanner lector = new Scanner(archivo, "UTF-8").useDelimiter(",|\\R")) {
+    try (Scanner lector = new Scanner(Path.of(nombreArchivo).toAbsolutePath(), "UTF-8").useDelimiter(",|\\R")) {
       // leer cada línea del archivo hasta que no queden más líneas
       while (lector.hasNext()) {
         // crear un cliente con los datos de la línea
