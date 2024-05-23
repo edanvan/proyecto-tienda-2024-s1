@@ -1,5 +1,6 @@
 package tienda;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -17,10 +18,11 @@ public class Cliente {
   
   private static final String nombreArchivo = "./datos/clientes.csv";
   //private static String rutaArchivo = Paths.get(nombreArchivo).toAbsolutePath().toString();
+  private static final File archivo = new File(nombreArchivo);
 
   public static void guardarClientes() {
 
-    try (Formatter escritor = new Formatter(Paths.get(nombreArchivo).toString(), "UTF-8")) {
+    try (Formatter escritor = new Formatter(archivo.getAbsolutePath(), "UTF-8")) {
       // 
       for (Cliente cliente : clientes) {
         // escribir cada atributo separándolos con comas(,) y un salto de línea al final para cada cliente
@@ -34,7 +36,7 @@ public class Cliente {
 
   public static void leerClientes() {
     // El scanner separará los atributos usando comas (,) pero evitará leer líneas vacías (\R)
-    try (Scanner lector = new Scanner(Paths.get(nombreArchivo), "UTF-8").useDelimiter(",|\\R")) {
+    try (Scanner lector = new Scanner(archivo, "UTF-8").useDelimiter(",|\\R")) {
       // leer cada línea del archivo hasta que no queden más líneas
       while (lector.hasNext()) {
         // crear un cliente con los datos de la línea
