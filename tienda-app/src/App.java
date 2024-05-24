@@ -53,12 +53,12 @@ public class App {
   }
 
   static void leerDatos() {
-    //GestionCliente.leerClientes();
+    GestionCliente.leerClientes();
     GestionProducto.leerProductos();
   }
 
   static void guardarDatos() {
-    //GestionCliente.guardarClientes();
+    GestionCliente.guardarClientes();
     GestionProducto.guardarProductos();
   }
 

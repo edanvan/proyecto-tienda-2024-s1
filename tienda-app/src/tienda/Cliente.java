@@ -1,11 +1,9 @@
 package tienda;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
@@ -54,10 +52,21 @@ public class Cliente {
     System.out.println("=".repeat(52));
 
     for (Cliente cliente : clientes) {
-      System.out.printf(formatoFilas, cliente.getIdentificacion(), cliente.getNombres(), cliente.apellidos);
+      System.out.printf(formatoFilas, cliente.getIdentificacion(), cliente.getNombres(), cliente.getApellidos());
     }
 
     System.out.println("-".repeat(52));
+  }
+
+  public static Cliente buscarCliente(String identificacion) {
+    // Retorna el primer cliente que encuentre en la lista
+    for (Cliente cliente : clientes) {
+      if (cliente.getIdentificacion().equalsIgnoreCase(identificacion)) {
+        return cliente;
+      }
+    }
+    // No hubo un cliente con esa identificación, retornar null
+    return null;
   }
 
   private String identificacion;
@@ -77,6 +86,8 @@ public class Cliente {
   public void guardar() {
     Cliente.clientes.add(this);
   }
+
+  
 
   public String getIdentificacion() {
     return identificacion;
