@@ -3,8 +3,9 @@ package tienda;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
@@ -18,34 +19,63 @@ public class Cliente {
   private static final String nombreArchivo = "datos/clientes.csv";
 
   public static void guardarClientes() {
-    String rutaArchivo = FileSystems.getDefault().getPath(nombreArchivo).toAbsolutePath().toString();
+    try {
+      // Tener la ruta completa del archivo
+      Path rutaArchivo = Paths.get(nombreArchivo).toAbsolutePath();
+      // Crear los directorios o carpetas intermedias
+      Files.createDirectories(rutaArchivo.getParent());
 
-    try (Formatter escritor = new Formatter(Path.of(rutaArchivo).toAbsolutePath().toString(), "UTF-8")) {
-      //
-      for (Cliente cliente : clientes) {
-        // escribir cada atributo separándolos con comas(,) y un salto de línea al final
-        // para cada cliente
-        escritor.format("%s,%s,%s%n", cliente.getIdentificacion(), cliente.getNombres(), cliente.getApellidos());
+      // Crear el archivo si el archivo no existe previamente
+      if (!Files.exists(rutaArchivo)) {
+        Files.createFile(rutaArchivo);
       }
-    } catch (SecurityException | FileNotFoundException | FormatterClosedException
-        | UnsupportedEncodingException error) {
-      System.out.printf("Error al guardar la lista de clientes:%n%s%n", error);
+
+      try (Formatter escritor = new Formatter(rutaArchivo.toString(), "UTF-8")) {
+        //
+        for (Cliente cliente : clientes) {
+          // escribir cada atributo separándolos con comas(,) y un salto de línea al final
+          // para cada cliente
+          escritor.format("%s,%s,%s%n", cliente.getIdentificacion(), cliente.getNombres(), cliente.getApellidos());
+        }
+      } catch (SecurityException | FileNotFoundException | FormatterClosedException
+          | UnsupportedEncodingException error) {
+        System.out.printf("Error al guardar la lista de clientes:%n%s%n", error);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
   public static void leerClientes() {
-    String rutaArchivo = FileSystems.getDefault().getPath(nombreArchivo).toAbsolutePath().toString();
-    // El scanner separará los atributos usando comas (,) pero evitará leer líneas
-    // vacías (\R)
-    try (Scanner lector = new Scanner(Path.of(rutaArchivo).toAbsolutePath(), "UTF-8").useDelimiter(",|\\R")) {
-      // leer cada línea del archivo hasta que no queden más líneas
-      while (lector.hasNext()) {
-        // crear un cliente con los datos de la línea
-        Cliente cliente = new Cliente(lector.next(), lector.next(), lector.next());
-        // // agregar el cliente a la lista de clientes.
-        clientes.add(cliente);
+    // Antes de leer el archivo, se desocupa la lista para evitar elementos
+    // repetidos
+    clientes.clear();
+
+    try {
+      // Tener la ruta completa del archivo
+      Path rutaArchivo = Paths.get(nombreArchivo).toAbsolutePath();
+      // Crear los directorios o carpetas intermedias
+      Files.createDirectories(rutaArchivo.getParent());
+
+      // Crear el archivo si el archivo no existe previamente
+      if (!Files.exists(rutaArchivo)) {
+        Files.createFile(rutaArchivo);
       }
-    } catch (IOException | NoSuchElementException | IllegalStateException e) {
+
+      // El scanner separará los atributos usando comas (,) pero evitará leer líneas
+      // vacías (\R)
+      try (Scanner lector = new Scanner(rutaArchivo, "UTF-8").useDelimiter(",|\\R")) {
+        // leer cada línea del archivo hasta que no queden más líneas
+        while (lector.hasNext()) {
+          // crear un cliente con los datos de la línea
+          Cliente cliente = new Cliente(lector.next(), lector.next(), lector.next());
+          // // agregar el cliente a la lista de clientes.
+          clientes.add(cliente);
+        }
+      } catch (IOException | NoSuchElementException | IllegalStateException e) {
+        e.printStackTrace();
+      }
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
