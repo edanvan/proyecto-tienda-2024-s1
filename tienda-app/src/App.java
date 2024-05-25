@@ -1,4 +1,5 @@
 import tienda.GestionCliente;
+import tienda.GestionProducto;
 
 public class App {
   public static void main(String[] args) throws Exception {
@@ -11,8 +12,8 @@ public class App {
       System.out.println("***** Menú Principal *****");
       String menu = """
           1. Registrar Venta
-          2. Gestionar Producto
-          3. Gestionar Cliente
+          2. Gestionar Productos
+          3. Gestionar Clientes
           8. Ver Acerca de
           9. Salir
           """;
@@ -27,7 +28,7 @@ public class App {
             // Registrar Venta;
             break;
           case 2:
-            // Gestionar Producto
+            GestionProducto.verMenu();
             break;
           case 3:
             GestionCliente.verMenu();
@@ -53,10 +54,12 @@ public class App {
 
   static void leerDatos() {
     GestionCliente.leerClientes();
+    GestionProducto.leerProductos();
   }
 
   static void guardarDatos() {
     GestionCliente.guardarClientes();
+    GestionProducto.guardarProductos();
   }
 
   static void verAcercaDe() {

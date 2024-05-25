@@ -1,11 +1,9 @@
 package tienda;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
@@ -16,13 +14,10 @@ import java.util.Scanner;
 public class Cliente {
   private static final List<Cliente> clientes = new ArrayList<Cliente>(10);
   
-  private static final String nombreArchivo = "./datos/clientes.csv";
-  //private static String rutaArchivo = Paths.get(nombreArchivo).toAbsolutePath().toString();
-  private static final File archivo = new File(nombreArchivo);
-
+  private static final String nombreArchivo = "datos/clientes.csv";
   public static void guardarClientes() {
 
-    try (Formatter escritor = new Formatter(archivo.getAbsolutePath(), "UTF-8")) {
+    try (Formatter escritor = new Formatter(Path.of(nombreArchivo).toAbsolutePath().toString(), "UTF-8")) {
       // 
       for (Cliente cliente : clientes) {
         // escribir cada atributo separándolos con comas(,) y un salto de línea al final para cada cliente
@@ -36,7 +31,7 @@ public class Cliente {
 
   public static void leerClientes() {
     // El scanner separará los atributos usando comas (,) pero evitará leer líneas vacías (\R)
-    try (Scanner lector = new Scanner(archivo, "UTF-8").useDelimiter(",|\\R")) {
+    try (Scanner lector = new Scanner(Path.of(nombreArchivo).toAbsolutePath(), "UTF-8").useDelimiter(",|\\R")) {
       // leer cada línea del archivo hasta que no queden más líneas
       while (lector.hasNext()) {
         // crear un cliente con los datos de la línea
@@ -57,11 +52,21 @@ public class Cliente {
     System.out.println("=".repeat(52));
 
     for (Cliente cliente : clientes) {
-      System.out.printf(formatoFilas, cliente.getIdentificacion(), cliente.getNombres(), cliente.apellidos);
+      System.out.printf(formatoFilas, cliente.getIdentificacion(), cliente.getNombres(), cliente.getApellidos());
     }
 
     System.out.println("-".repeat(52));
+  }
 
+  public static Cliente buscarCliente(String identificacion) {
+    // Retorna el primer cliente que encuentre en la lista
+    for (Cliente cliente : clientes) {
+      if (cliente.getIdentificacion().equalsIgnoreCase(identificacion)) {
+        return cliente;
+      }
+    }
+    // No hubo un cliente con esa identificación, retornar null
+    return null;
   }
 
   private String identificacion;
@@ -78,9 +83,11 @@ public class Cliente {
     setApellidos(apellidos);
   }
 
-  public boolean guardar() {
-    return Cliente.clientes.add(this);
+  public void guardar() {
+    Cliente.clientes.add(this);
   }
+
+  
 
   public String getIdentificacion() {
     return identificacion;
