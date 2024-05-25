@@ -1,63 +1,123 @@
 package tienda;
 
+import java.util.Scanner;
+
 public class Producto {
-
-    private String nombre;
-    private double precio;
-    private int cantidad;
-
-    public Producto(String nombre, double precio, int cantidad) {
-        this.nombre = nombre;
-        this.precio = precio;
-        this.cantidad = cantidad;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-
-    public void setNombre(String nombre) {
-    this.nombre = nombre;
-}
-
-    public double getPrecio() {
-    return precio;
-}
-
-    public void setPrecio(double precio) {
-    this.precio = precio;
-}
-
-    public int getCantidad() {
-    return cantidad;
-}
-
-    public void setCantidad(int cantidad) {
-    this.cantidad = cantidad;
-}
-
-
-    public double calcularValorTotal() {
-    return precio * cantidad;
-}
-
-    public void mostrarInformacion() {
-    System.out.println("Nombre: " + nombre);
-    System.out.println("Precio: $" + precio);
-    System.out.println("Cantidad: " + cantidad);
-    System.out.println("Valor Total: $" + calcularValorTotal());
-}
-
     public static void main(String[] args) {
 
-    Producto producto1 = new Producto("Manzana", 0.75, 100);
+        Player player = new Player(1000);
 
-    producto1.mostrarInformacion();
 
-    producto1.setCantidad(120);
+        Product apple = new Product("Manzana", 2.5);
+        Product aspirin = new Product("Aspirina", 5.0);
+        Product notebook = new Product("Cuaderno", 3.0);
 
-    System.out.println("\nInformación actualizada del producto:");
-    producto1.mostrarInformacion();
+
+        Scanner scanner = new Scanner(System.in);
+
+        boolean continueShopping = true;
+
+        while (continueShopping) {
+            System.out.println("Saldo actual: " + player.getBalance() + " dólares");
+            System.out.println("Seleccione una opción: [C] Comprar, [V] Vender, [N] Salir");
+            String option = scanner.nextLine().toUpperCase();
+
+            switch (option) {
+                case "C":
+                    System.out.println("Seleccione el producto para comprar: [1] Manzana, [2] Aspirina, [3] Cuaderno");
+                    int buyOption = scanner.nextInt();
+                    System.out.println("Ingrese la cantidad:");
+                    int buyQuantity = scanner.nextInt();
+                    scanner.nextLine();  // Limpiar el buffer
+
+                    if (buyOption == 1) {
+                        player.buy(apple, buyQuantity);
+                    } else if (buyOption == 2) {
+                        player.buy(aspirin, buyQuantity);
+                    } else if (buyOption == 3) {
+                        player.buy(notebook, buyQuantity);
+                    } else {
+                        System.out.println("Opción no válida.");
+                    }
+                    break;
+                case "V":
+                    System.out.println("Seleccione el producto para vender: [1] Manzana, [2] Aspirina, [3] Cuaderno");
+                    int sellOption = scanner.nextInt();
+                    System.out.println("Ingrese la cantidad:");
+                    int sellQuantity = scanner.nextInt();
+                    scanner.nextLine();  // Limpiar el buffer
+
+                    if (sellOption == 1) {
+                        player.sell(apple, sellQuantity);
+                    } else if (sellOption == 2) {
+                        player.sell(aspirin, sellQuantity);
+                    } else if (sellOption == 3) {
+                        player.sell(notebook, sellQuantity);
+                    } else {
+                        System.out.println("Opción no válida.");
+                    }
+                    break;
+                case "N":
+                    continueShopping = false;
+                    System.out.println("Gracias por visitar la tienda. Saldo final: " + player.getBalance() + " dólares");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Inténtelo de nuevo.");
+                    break;
+            }
+        }
+
+        scanner.close();
+    }
+}
+
+class Player {
+    private double balance;
+    private final double MAX_BALANCE = 2500;
+
+    public Player(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void buy(Product product, int quantity) {
+        double cost = product.getPrice() * quantity;
+        if (balance >= cost) {
+            balance -= cost;
+            System.out.println("Compraste " + quantity + " " + product.getName() + "(s) por " + cost + " dólares.");
+        } else {
+            System.out.println("Fondos insuficientes para comprar " + quantity + " " + product.getName() + "(s).");
+        }
+    }
+
+    public void sell(Product product, int quantity) {
+        double revenue = product.getPrice() * quantity;
+        if (balance + revenue <= MAX_BALANCE) {
+            balance += revenue;
+            System.out.println("Vendiste " + quantity + " " + product.getName() + "(s) por " + revenue + " dólares.");
+        } else {
+            System.out.println("No puedes vender " + quantity + " " + product.getName() + "(s) porque excederías el saldo máximo permitido.");
+        }
+    }
+}
+
+class Product {
+    private String name;
+    private double price;
+
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
     }
 }
