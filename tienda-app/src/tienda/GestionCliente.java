@@ -3,6 +3,8 @@ package tienda;
 public class GestionCliente {
 
   public static void verMenu() {
+    GestionCliente.leerClientes();
+    
     int menuSeleccionado = 0;
     do {
       System.out.println("++++++ Administración de Tienda ++++++");

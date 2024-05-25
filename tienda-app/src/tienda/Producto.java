@@ -1,123 +1,147 @@
 package tienda;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.FormatterClosedException;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Producto {
-    public static void main(String[] args) {
 
-        Player player = new Player(1000);
+    private static final List<Producto> productos = new ArrayList<Producto>(10);
 
+    private static final String nombreArchivo = "datos/productos.csv";
 
-        Product apple = new Product("Manzana", 2.5);
-        Product aspirin = new Product("Aspirina", 5.0);
-        Product notebook = new Product("Cuaderno", 3.0);
+    public static void guardarProductos() {
 
+        String rutaArchivo = FileSystems.getDefault().getPath(nombreArchivo).toAbsolutePath().toString();
 
-        Scanner scanner = new Scanner(System.in);
-
-        boolean continueShopping = true;
-
-        while (continueShopping) {
-            System.out.println("Saldo actual: " + player.getBalance() + " dólares");
-            System.out.println("Seleccione una opción: [C] Comprar, [V] Vender, [N] Salir");
-            String option = scanner.nextLine().toUpperCase();
-
-            switch (option) {
-                case "C":
-                    System.out.println("Seleccione el producto para comprar: [1] Manzana, [2] Aspirina, [3] Cuaderno");
-                    int buyOption = scanner.nextInt();
-                    System.out.println("Ingrese la cantidad:");
-                    int buyQuantity = scanner.nextInt();
-                    scanner.nextLine(); 
-
-                    if (buyOption == 1) {
-                        player.buy(apple, buyQuantity);
-                    } else if (buyOption == 2) {
-                        player.buy(aspirin, buyQuantity);
-                    } else if (buyOption == 3) {
-                        player.buy(notebook, buyQuantity);
-                    } else {
-                        System.out.println("Opción no válida.");
-                    }
-                    break;
-                case "V":
-                    System.out.println("Seleccione el producto para vender: [1] Manzana, [2] Aspirina, [3] Cuaderno");
-                    int sellOption = scanner.nextInt();
-                    System.out.println("Ingrese la cantidad:");
-                    int sellQuantity = scanner.nextInt();
-                    scanner.nextLine(); 
-
-                    if (sellOption == 1) {
-                        player.sell(apple, sellQuantity);
-                    } else if (sellOption == 2) {
-                        player.sell(aspirin, sellQuantity);
-                    } else if (sellOption == 3) {
-                        player.sell(notebook, sellQuantity);
-                    } else {
-                        System.out.println("Opción no válida.");
-                    }
-                    break;
-                case "N":
-                    continueShopping = false;
-                    System.out.println("Gracias por visitar la tienda. Saldo final: " + player.getBalance() + " dólares");
-                    break;
-                default:
-                    System.out.println("Opción no válida. Inténtelo de nuevo.");
-                    break;
+        try (Formatter escritor = new Formatter(rutaArchivo, "UTF-8")) {
+            for (Producto producto : productos) {
+                // Escribir cada atributo separándolos con comas(,) y un salto de línea al final
+                // para cada producto
+                escritor.format("%s,%s,%.2f,%.2f,%d%n", producto.getCodigo(), producto.getNombre(),
+                        producto.getPrecio(),
+                        producto.getPorcentajeIva(), producto.getCantidadInventario());
             }
-        }
 
-        scanner.close();
-    }
-}
-
-class Player {
-    private double balance;
-    private final double MAX_BALANCE = 2500;
-
-    public Player(double initialBalance) {
-        this.balance = initialBalance;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void buy(Product product, int quantity) {
-        double cost = product.getPrice() * quantity;
-        if (balance >= cost) {
-            balance -= cost;
-            System.out.println("Compraste " + quantity + " " + product.getName() + "(s) por " + cost + " dólares.");
-        } else {
-            System.out.println("Fondos insuficientes para comprar " + quantity + " " + product.getName() + "(s).");
+        } catch (SecurityException | FileNotFoundException | FormatterClosedException
+                | UnsupportedEncodingException error) {
+            System.out.printf("Error al guardar la lista de productos:%n%s%n", error);
         }
     }
 
-    public void sell(Product product, int quantity) {
-        double revenue = product.getPrice() * quantity;
-        if (balance + revenue <= MAX_BALANCE) {
-            balance += revenue;
-            System.out.println("Vendiste " + quantity + " " + product.getName() + "(s) por " + revenue + " dólares.");
-        } else {
-            System.out.println("No puedes vender " + quantity + " " + product.getName() + "(s) porque excederías el saldo máximo permitido.");
+    public static void leerProductos() {
+        String rutaArchivo = FileSystems.getDefault().getPath(nombreArchivo).toAbsolutePath().toString();
+        // El scanner separará los atributos usando comas (,) pero evitará leer líneas
+        // vacías (\R)
+        try (Scanner lector = new Scanner(Path.of(rutaArchivo).toAbsolutePath(), "UTF-8").useDelimiter(",|\\R")) {
+            // leer cada línea del archivo hasta que no queden más líneas
+            while (lector.hasNext()) {
+                // crear un producto con los datos de la línea
+                Producto producto = new Producto(lector.next(), lector.next(), lector.nextDouble(), lector.nextDouble(),
+                        lector.nextInt());
+                // // agregar el cliente a la lista de clientes.
+                productos.add(producto);
+            }
+        } catch (IOException | NoSuchElementException | IllegalStateException e) {
+            e.printStackTrace();
         }
     }
-}
 
-class Product {
-    private String name;
-    private double price;
+    public static void verProductos() {
+        String formatoEncabezado = "| %-10s | %-30s | %-10s | %-8s | %-10s | %-10s |%n";
+        System.out.printf(formatoEncabezado, "CÓDIGO", "NOMBRE", "PRECIO BASE", "IVA (%)", "PRECIO FINAL",
+                "INVENTARIO");
 
-    public Product(String name, double price) {
-        this.name = name;
-        this.price = price;
+        String formatoFilas = "| %-10s | %-30s | %,11.2f | %,8.2f | %,12.2f | %10d |%n";
+        System.out.println("=".repeat(100));
+
+        for (Producto producto : productos) {
+            System.out.printf(formatoFilas, producto.getCodigo(), producto.getNombre(), producto.getPrecio(),
+                    producto.getPorcentajeIva(), producto.getPrecio() * (1 + (producto.getPorcentajeIva() / 100.0d)),
+                    producto.getCantidadInventario());
+        }
+
+        System.out.println("-".repeat(100));
     }
 
-    public String getName() {
-        return name;
+    private String codigo;
+    private String nombre;
+    private double precio;
+    private double porcentajeIva;
+    private int cantidadInventario;
+
+    public Producto() {
+        this("", "", 0.0d, 0.0d, 0);
     }
 
-    public double getPrice() {
-        return price;
+    public Producto(String codigo, String nombre, double precio, double getPorcentajeIva, int cantidadInventario) {
+        setCodigo(codigo);
+        setNombre(nombre);
+        setPrecio(precio);
+        setPorcentajeIva(getPorcentajeIva);
+        setCantidadInventario(cantidadInventario);
+    }
+
+    public double calcularValorTotal() {
+        return precio * (porcentajeIva / 100.0d) * cantidadInventario;
+    }
+
+    public void guardar() {
+        Producto.productos.add(this);
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public double getPorcentajeIva() {
+        return porcentajeIva;
+    }
+
+    public void setPorcentajeIva(double porcentajeIva) {
+        this.porcentajeIva = porcentajeIva;
+    }
+
+    public int getCantidadInventario() {
+        return cantidadInventario;
+    }
+
+    public void setCantidadInventario(int cantidad) {
+        this.cantidadInventario = cantidad;
+    }
+
+    public void mostrarInformacion() {
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Precio: $" + precio);
+        System.out.println("Cantidad: " + cantidadInventario);
+        System.out.println("Valor Total: $" + calcularValorTotal());
     }
 }

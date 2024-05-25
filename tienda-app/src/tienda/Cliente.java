@@ -3,6 +3,7 @@ package tienda;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -13,14 +14,17 @@ import java.util.Scanner;
 
 public class Cliente {
   private static final List<Cliente> clientes = new ArrayList<Cliente>(10);
-  
-  private static final String nombreArchivo = "datos/clientes.csv";
-  public static void guardarClientes() {
 
-    try (Formatter escritor = new Formatter(Path.of(nombreArchivo).toAbsolutePath().toString(), "UTF-8")) {
-      // 
+  private static final String nombreArchivo = "datos/clientes.csv";
+
+  public static void guardarClientes() {
+    String rutaArchivo = FileSystems.getDefault().getPath(nombreArchivo).toAbsolutePath().toString();
+
+    try (Formatter escritor = new Formatter(Path.of(rutaArchivo).toAbsolutePath().toString(), "UTF-8")) {
+      //
       for (Cliente cliente : clientes) {
-        // escribir cada atributo separándolos con comas(,) y un salto de línea al final para cada cliente
+        // escribir cada atributo separándolos con comas(,) y un salto de línea al final
+        // para cada cliente
         escritor.format("%s,%s,%s%n", cliente.getIdentificacion(), cliente.getNombres(), cliente.getApellidos());
       }
     } catch (SecurityException | FileNotFoundException | FormatterClosedException
@@ -30,8 +34,10 @@ public class Cliente {
   }
 
   public static void leerClientes() {
-    // El scanner separará los atributos usando comas (,) pero evitará leer líneas vacías (\R)
-    try (Scanner lector = new Scanner(Path.of(nombreArchivo).toAbsolutePath(), "UTF-8").useDelimiter(",|\\R")) {
+    String rutaArchivo = FileSystems.getDefault().getPath(nombreArchivo).toAbsolutePath().toString();
+    // El scanner separará los atributos usando comas (,) pero evitará leer líneas
+    // vacías (\R)
+    try (Scanner lector = new Scanner(Path.of(rutaArchivo).toAbsolutePath(), "UTF-8").useDelimiter(",|\\R")) {
       // leer cada línea del archivo hasta que no queden más líneas
       while (lector.hasNext()) {
         // crear un cliente con los datos de la línea
@@ -86,8 +92,6 @@ public class Cliente {
   public void guardar() {
     Cliente.clientes.add(this);
   }
-
-  
 
   public String getIdentificacion() {
     return identificacion;

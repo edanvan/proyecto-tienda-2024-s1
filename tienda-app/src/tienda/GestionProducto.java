@@ -3,6 +3,8 @@ package tienda;
 public class GestionProducto {
 
   public static void verMenu() {
+    GestionProducto.leerProductos();
+
     int menuSeleccionado = 0;
     do {
       System.out.println("++++++ Administración de Tienda ++++++");
@@ -58,6 +60,7 @@ public class GestionProducto {
       Producto producto = new Producto(codigo, nombre, precio, porcentajeIva, cantidadInventario);
 
       producto.guardar();
+      GestionProducto.guardarProductos();
 
     } catch (NumberFormatException error) {
       System.out.println("Error al convertir un número:\n" + error.getMessage());
