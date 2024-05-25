@@ -28,7 +28,7 @@ public class Producto {
                     int buyOption = scanner.nextInt();
                     System.out.println("Ingrese la cantidad:");
                     int buyQuantity = scanner.nextInt();
-                    scanner.nextLine();  // Limpiar el buffer
+                    scanner.nextLine(); 
 
                     if (buyOption == 1) {
                         player.buy(apple, buyQuantity);
@@ -45,7 +45,7 @@ public class Producto {
                     int sellOption = scanner.nextInt();
                     System.out.println("Ingrese la cantidad:");
                     int sellQuantity = scanner.nextInt();
-                    scanner.nextLine();  // Limpiar el buffer
+                    scanner.nextLine(); 
 
                     if (sellOption == 1) {
                         player.sell(apple, sellQuantity);
