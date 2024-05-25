@@ -2,7 +2,7 @@ package tienda;
 
 import java.util.Scanner;
 
-public class ProductoAlternativo {
+public class ProductoVenta {
     public static void main(String[] args) {
 
         Player player = new Player(1000);
