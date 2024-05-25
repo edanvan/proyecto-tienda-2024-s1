@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class CajaRegistradora {
 
-  public static void main(String[] args) {
+  public static void main() {
     Scanner scanner = new Scanner(System.in);
     // Lista de productos
     String[] productos = { "Arroz", "Frijoles", "Aceite de cocina", "Harina de trigo", "Azúcar", "Sal", "Pasta",

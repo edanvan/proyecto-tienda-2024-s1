@@ -1,5 +1,7 @@
+import tienda.CajaRegistradora;
 import tienda.GestionCliente;
 import tienda.GestionProducto;
+import tienda.ProductoVenta;
 
 public class App {
   public static void main(String[] args) throws Exception {
@@ -11,9 +13,10 @@ public class App {
       System.out.println("++++++ Administración de Tienda ++++++");
       System.out.println("***** Menú Principal *****");
       String menu = """
-          1. Registrar Venta
-          2. Gestionar Productos
-          3. Gestionar Clientes
+          1. Registrar Producto Venta
+          2. Manejar Caja Registradora
+          3. Gestionar Productos
+          4. Gestionar Clientes
           8. Ver Acerca de
           9. Salir
           """;
@@ -25,12 +28,15 @@ public class App {
 
         switch (menuSeleccionado) {
           case 1:
-            // Registrar Venta;
+            ProductoVenta.main(args);
             break;
           case 2:
-            GestionProducto.verMenu();
+            CajaRegistradora.main();
             break;
           case 3:
+            GestionProducto.verMenu();
+            break;
+          case 4:
             GestionCliente.verMenu();
             break;
           case 8:
