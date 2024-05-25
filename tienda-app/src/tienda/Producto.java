@@ -102,6 +102,17 @@ public class Producto {
     System.out.println("-".repeat(100));
   }
 
+  public static Producto buscarProducto(String codigo) {
+    // Retorna el primer producto que encuentre en la lista
+    for (Producto producto : productos) {
+      if (producto.getCodigo().equalsIgnoreCase(codigo)) {
+        return producto;
+      }
+    }
+    // No hubo un producto con ese código, retornar null
+    return null;
+  }
+
   private String codigo;
   private String nombre;
   private double precio;
