@@ -12,3 +12,6 @@ Integrantes:
 - Sebastián Rodríguez 
 - Valeryn Michel Pérez
 
+[Repositorio en GitHub](https://github.com/edanvan/proyecto-tienda-2024-s1)
+
+
